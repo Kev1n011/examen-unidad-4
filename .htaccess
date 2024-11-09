@@ -5,6 +5,8 @@ RewriteEngine on
 RewriteRule ^sample/?$ views/sample.php 
 RewriteRule ^home/?$ views/home.php 
 
+RewriteRule ^forgot_password/?$ views/user/forgot_password.php 
+
 RewriteRule ^products/?$ views/products/index.php 
 RewriteRule ^products/create/?$ views/products/create.php 
 RewriteRule ^products/details/([^\/]+)/?$ views/products/details.php?slug=$1 [L]

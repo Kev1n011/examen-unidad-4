@@ -70,7 +70,7 @@ include "app/global_token.php"
                 </div>
                 <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>">
                 <input type="hidden" name="enviar" value="enviar">
-                <a href="forgot-password-v2.html">
+                <a href="<?= BASE_PATH ?>/forgot_password">
                   <h6 class="text-secondary f-w-400 mb-0">Forgot Password?</h6>
                 </a>
               </div>
