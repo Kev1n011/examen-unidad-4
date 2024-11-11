@@ -1,10 +1,16 @@
+<?php 
+  if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 <!-- [ Sidebar Menu ] start -->
 <nav class="pc-sidebar">
   <div class="navbar-wrapper">
     <div class="m-header">
-      <a href="../dashboard/index.html" class="b-brand text-primary">
+      <a href="<?= BASE_PATH ?>home" class="b-brand text-primary">
         <!-- ========   Change your logo from here   ============ -->
-        <img src="<?= BASE_PATH ?>assets/images/logo-dark.svg" alt="logo image" class="logo-lg" /> 
+        <img src="<?= BASE_PATH ?>assets/images/logo-dark.svg" alt="logo image" /> 
       </a>
     </div>
     <div class="navbar-content">
@@ -733,7 +739,8 @@
               <div class="dropdown-menu">
                 <ul>
                   <li>
-                    <a class="pc-user-links">
+                    <a href="./my_account/<?php echo str_replace(' ', '-', $_SESSION['user_data']['name']); ?>" class="pc-user-links">
+
                       <i class="ph-duotone ph-user"></i>
                       <span>My Account</span>
                     </a>

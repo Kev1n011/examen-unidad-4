@@ -13,6 +13,8 @@
     <link rel="icon" href="<?= BASE_PATH ?>assets/images/favicon.svg" type="image/x-icon" />
     
     <!-- [Google Font : Public Sans] icon -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
     <!-- [phosphor Icons] https://phosphoricons.com/ -->
     <link rel="stylesheet" href="<?= BASE_PATH ?>assets/fonts/phosphor/duotone/style.css" />
@@ -28,4 +30,5 @@
     <link rel="stylesheet" href="<?= BASE_PATH ?>assets/css/style.css" id="main-style-link" />
     <link rel="stylesheet" href="<?= BASE_PATH ?>assets/css/style-preset.css" />
     <link rel="stylesheet" href="<?= BASE_PATH ?>assets/css/custom.css" />
+    
 

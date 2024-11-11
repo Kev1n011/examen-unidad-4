@@ -360,7 +360,7 @@
           data-bs-auto-close="outside"
           aria-expanded="false"
         >
-          <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+          <img src="<?= BASE_PATH ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
         </a>
         <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
           <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -372,7 +372,7 @@
                 <li class="list-group-item">
                   <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                      <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="wid-50 rounded-circle" />
+                      <img src="<?= BASE_PATH ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="wid-50 rounded-circle" />
                     </div>
                     <div class="flex-grow-1 mx-3">
                       <h5 class="mb-0">Carson Darrin</h5>
@@ -394,9 +394,9 @@
                       <span>Recently mail</span>
                     </span>
                     <div class="user-group">
-                      <img src="../assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
-                      <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="avtar" />
-                      <img src="../assets/images/user/avatar-3.jpg" alt="user-image" class="avtar" />
+                      <img src="<?= BASE_PATH ?>/assets/images/user/avatar-1.jpg" alt="user-image" class="avtar" />
+                      <img src="<?= BASE_PATH ?>/assets/images/user/avatar-2.jpg" alt="user-image" class="avtar" />
+                      <img src="<?= BASE_PATH ?>/assets/images/user/avatar-3.jpg" alt="user-image" class="avtar" />
                     </div>
                   </a>
                   <a href="#" class="dropdown-item">

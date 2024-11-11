@@ -42,10 +42,13 @@ include_once ("./config.php");
 
             $response = curl_exec($curl);
             
-            $response = json_decode($response);
+            $response = json_decode($response, true);
 
-            if(isset($response -> data) && is_object($response)) {
+            if(isset($response['data'])) {
                 $_SESSION['logeado'] = true;
+                print_r(value: $response);
+                $_SESSION['user_id'] = $response['data']['id'];
+                $_SESSION['user_data']= $response['data'];
                 header("location: " . BASE_PATH ."home");
             }
             else {

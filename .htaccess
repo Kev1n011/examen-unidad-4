@@ -5,7 +5,12 @@ RewriteEngine on
 RewriteRule ^sample/?$ views/sample.php 
 RewriteRule ^home/?$ views/home.php 
 
+#LOGIN
 RewriteRule ^forgot_password/?$ views/user/forgot_password.php 
+
+#ACCOUNT
+RewriteRule ^my_account/([a-zA-Z\-]+)/?$ views/user/account_profile.php?name=$1 [L]
+
 
 RewriteRule ^products/?$ views/products/index.php 
 RewriteRule ^products/create/?$ views/products/create.php 
