@@ -1,7 +1,6 @@
 <?php
 include "../../app/global_token.php";
-
-include "../../app/config.php";
+include_once '../../app/AuthController.php';
 include "../../app/userController.php";
 
 if (session_status() == PHP_SESSION_NONE) {

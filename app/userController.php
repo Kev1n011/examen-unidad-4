@@ -30,7 +30,7 @@ class UserController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
+                'Authorization: Bearer '.$_SESSION['user_data']['token'].''
             ),
         ));
 
@@ -65,9 +65,11 @@ class UserController
             CURLOPT_POSTFIELDS => 'name='. $name .'&lastname='. $lastname .'&phone_number='. $phone_number .'&role='. $role .'&id='. $id .'',
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded',
-                'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
+                'Authorization: Bearer '.$_SESSION['user_data']['token'].''
             ),
         ));
+
+        $_SESSION['user_data']['name']= $name;
 
         $response = curl_exec($curl);
 

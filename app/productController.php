@@ -89,7 +89,7 @@ class ProductController
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'GET',
       CURLOPT_HTTPHEADER => array(
-          'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
+           'Authorization: Bearer '.$_SESSION['user_data']['token'].''
         ),
     ));
 
@@ -126,7 +126,7 @@ class ProductController
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
         CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
+             'Authorization: Bearer '.$_SESSION['user_data']['token'].''
           ),
       ));
 
@@ -165,7 +165,7 @@ class ProductController
       CURLOPT_CUSTOMREQUEST => 'POST',
       CURLOPT_POSTFIELDS => array('name' => $nombre, 'slug' => $slug, 'description' => $descripcion, 'features' => $features, 'brand_id' => $brand_id, 'cover' => new CURLFILE($cover)),
       CURLOPT_HTTPHEADER => array(
-          'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
+           'Authorization: Bearer '.$_SESSION['user_data']['token'].''
         ),
     ));
 
@@ -222,7 +222,7 @@ class ProductController
       CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
       CURLOPT_CUSTOMREQUEST => 'DELETE',
       CURLOPT_HTTPHEADER => array(
-          'Authorization: Bearer 38|BlPdbiUNy96CLf3MfJ2qFzRqfMiWmgvq3CRVg9Mv'
+           'Authorization: Bearer '.$_SESSION['user_data']['token'].''
         ),
     ));
 
