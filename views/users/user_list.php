@@ -52,7 +52,8 @@ $users = $userController->obtener_usuarios();
                                 </div>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add User</div>
+                                <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
+                                    User</div>
                             </div>
 
 
@@ -238,13 +239,18 @@ $users = $userController->obtener_usuarios();
                                     <div class="d-flex justify-content-end">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                <li @click="pagina_anterior()" class="page-item"><a class="page-link" style="cursor: pointer;">Previous</a></li>
+                                                <li @click="pagina_anterior()" class="page-item"><a class="page-link"
+                                                        style="cursor: pointer;">Previous</a></li>
                                                 <div v-for="n in cantidad_paginas" :key="n">
-                                                    <div  v-if="n >= pagina_actual - 1 && n <= pagina_actual + 1">
-                                                        <li v-if="n === pagina_actual" class="page-item"> <a class="page-link active" style="cursor: pointer;">{{ n }}</a></li>
-                                                        <li @click="seleccionar_pagina(n)" v-else class="page-item"><a class="page-link" style="cursor: pointer;">{{ n }}</a></li>
+                                                    <div v-if="n >= pagina_actual - 1 && n <= pagina_actual + 1">
+                                                        <li v-if="n === pagina_actual" class="page-item"> <a
+                                                                class="page-link active" style="cursor: pointer;">{{ n
+                                                                }}</a></li>
+                                                        <li @click="seleccionar_pagina(n)" v-else class="page-item"><a
+                                                                class="page-link" style="cursor: pointer;">{{ n }}</a>
+                                                        </li>
                                                     </div>
-                                                    
+
                                                 </div>
 
                                                 <li @click="pagina_siguiente()" class="page-item"><a class="page-link"
@@ -273,8 +279,12 @@ $users = $userController->obtener_usuarios();
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="profilePic" class="form-label">Profile Picture</label>
+                            <input type="file" class="form-control" id="cover" name="cover">
+                        </div>
                         <div class="mb-3">
                             <label for="emailInput" class="form-label">Email address</label>
                             <input type="email" class="form-control" id="email" name="email"
@@ -294,21 +304,26 @@ $users = $userController->obtener_usuarios();
                             <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
                         </div>
                         <div class="mb-3">
-                            <label for="roleInput" class="form-label">Role</label>
-                            <input type="text" class="form-control" id="role" name="role">
+                        <select class="form-select" id="role_dropdown" name="role_dropdown" aria-label="Default select example">
+                            <option disabled selected value> -- Select a role </option>
+                            <option value="Administrador">Administrador</option>
+                         
+                        </select>
                         </div>
                         <div class="mb-3">
                             <label for="inputPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="passoword">
+                            <input type="password" class="form-control" id="password" name="password">
                         </div>
+                        <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>">
+                        <input type="hidden" name="agregarUsuario" value="agregarUsuario">
 
-                    </form>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -364,12 +379,12 @@ $users = $userController->obtener_usuarios();
 
                     }
                     if (this.variable_usuarios <= this.users.length && ultima_pagina == false) {
-                       
+
                         this.userData = [];
                         this.variable_usuarios += 10;
                         this.variable_rango_usuarios += 10;
                         this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
-                       
+
                         this.pagina_actual += 1;
 
                     }
@@ -379,25 +394,25 @@ $users = $userController->obtener_usuarios();
                 pagina_anterior() {
                     let primera_pagina = false;
                     console.log(this.users.length)
-                    if(this.pagina_actual == 1){
+                    if (this.pagina_actual == 1) {
                         primera_pagina = true;
-                    }else{
+                    } else {
                         primera_pagina = false;
                     }
-                    
+
                     if (this.variable_usuarios <= this.users.length && primera_pagina == false) {
                         this.variable_usuarios -= 10;
                         this.variable_rango_usuarios -= 10
                         this.userData = [];
                         this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
-                       ;
+                        ;
                         this.pagina_actual -= 1;
 
                     }
 
 
                 },
-                seleccionar_pagina(numero){
+                seleccionar_pagina(numero) {
                     this.pagina_actual = numero;
 
                     this.variable_usuarios = numero * 10;
@@ -405,8 +420,8 @@ $users = $userController->obtener_usuarios();
                     this.userData = [];
                     this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
 
-              
-                    
+
+
                 },
                 obtener_paginas() {
                     let contador = 0;
