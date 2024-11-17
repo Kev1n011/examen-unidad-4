@@ -12,7 +12,7 @@ RewriteRule ^forgot_password/?$ views/user/forgot_password.php
 RewriteRule ^my_account/([a-zA-Z\-]+)/?$ views/user/account_profile.php?name=$1 [L]
 
 #USERS
-RewriteRule ^users/user_list/?$ views/users/user_list.php 
+RewriteRule ^users/user_list/?$ views/users/user_list.php?  
 
 #PRODUCTS
 RewriteRule ^products/?$ views/products/index.php 

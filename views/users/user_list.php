@@ -238,17 +238,17 @@ $users = $userController->obtener_usuarios();
                                     <div class="d-flex justify-content-end">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
-                                                <li @click="pagina_anterior()" class="page-item"><a class="page-link" href="#!">Previous</a></li>
+                                                <li @click="pagina_anterior()" class="page-item"><a class="page-link" style="cursor: pointer;">Previous</a></li>
                                                 <div v-for="n in cantidad_paginas" :key="n">
                                                     <div  v-if="n >= pagina_actual - 1 && n <= pagina_actual + 1">
-                                                        <li v-if="n === pagina_actual" class="page-item"> <a class="page-link active" href="#!">{{ n }}</a></li>
-                                                        <li @click="seleccionar_pagina(n)" v-else class="page-item"><a class="page-link" href="#!">{{ n }}</a></li>
+                                                        <li v-if="n === pagina_actual" class="page-item"> <a class="page-link active" style="cursor: pointer;">{{ n }}</a></li>
+                                                        <li @click="seleccionar_pagina(n)" v-else class="page-item"><a class="page-link" style="cursor: pointer;">{{ n }}</a></li>
                                                     </div>
                                                     
                                                 </div>
 
                                                 <li @click="pagina_siguiente()" class="page-item"><a class="page-link"
-                                                        href="#!">Next</a></li>
+                                                        style="cursor: pointer;">Next</a></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -276,14 +276,30 @@ $users = $userController->obtener_usuarios();
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
+                            <label for="emailInput" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email"
                                 aria-describedby="emailHelp">
                             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                         </div>
                         <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
+                            <label for="firstNameInput" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastNameInput" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumberInput" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                        </div>
+                        <div class="mb-3">
+                            <label for="roleInput" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="role" name="role">
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="passoword">
                         </div>
 
                     </form>
@@ -388,6 +404,8 @@ $users = $userController->obtener_usuarios();
                     this.variable_rango_usuarios = (numero * 10) + 10;
                     this.userData = [];
                     this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
+
+              
                     
                 },
                 obtener_paginas() {
