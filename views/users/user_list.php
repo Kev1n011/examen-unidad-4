@@ -51,10 +51,7 @@ $users = $userController->obtener_usuarios();
 
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
-                                    User</div>
-                            </div>
+                            
 
 
                         </div>
@@ -64,13 +61,22 @@ $users = $userController->obtener_usuarios();
 
 
                 <!-- [ Main Content ] start -->
+                <div class="d-flex justify-content-end">
+                                <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
+                                    User</div>
+                            </div>
                 <div class="row">
                     <!-- [ sample-page ] start -->
                     <div class="col-sm-12">
                         <div class="card border-0 table-card user-profile-list">
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover" id="pc-dt-simple">
+                                <div v-if="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                                    <table v-else class="table table-hover" id="pc-dt-simple">
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
@@ -78,128 +84,13 @@ $users = $userController->obtener_usuarios();
                                                 <th>Email</th>
                                                 <th>Phone number</th>
                                                 <th>Creation date</th>
-                                                <th>Status</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <img src="<?= BASE_PATH ?>/assets/images/user/avatar-1.jpg"
-                                                            alt="user image" class="img-radius align-top m-r-15"
-                                                            style="width: 40px" />
-                                                        <div class="d-inline-block">
-                                                            <h6 class="m-b-0">Quinn Flynn</h6>
-                                                            <p class="m-b-0 text-primary">Android developer</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>Support Lead</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>
-                                                    <span class="badge bg-light-success">Active</span>
-                                                    <div class="overlay-edit">
-                                                        <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn btn-primary"><i
-                                                                        class="ti ti-pencil f-18"></i></a></li>
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn bg-white btn-link-danger"><i
-                                                                        class="ti ti-trash f-18"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <img src="<?= BASE_PATH ?>/assets/images/user/avatar-2.jpg"
-                                                            alt="user image" class="img-radius align-top m-r-15"
-                                                            style="width: 40px" />
-                                                        <div class="d-inline-block">
-                                                            <h6 class="m-b-0">Garrett Winters</h6>
-                                                            <p class="m-b-0 text-primary">Android developer</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>63</td>
-                                                <td>2011/07/25</td>
-                                                <td>
-                                                    <span class="badge bg-light-danger">Disabled</span>
-                                                    <div class="overlay-edit">
-                                                        <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn btn-primary"><i
-                                                                        class="ti ti-pencil f-18"></i></a></li>
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn bg-white btn-link-danger"><i
-                                                                        class="ti ti-trash f-18"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <img src="<?= BASE_PATH ?>/assets/images/user/avatar-3.jpg"
-                                                            alt="user image" class="img-radius align-top m-r-15"
-                                                            style="width: 40px" />
-                                                        <div class="d-inline-block">
-                                                            <h6 class="m-b-0">{{userData.name}}</h6>
-                                                            <p class="m-b-0 text-primary">Android developer</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>Junior Technical Author</td>
-                                                <td>San Francisco</td>
-                                                <td>66</td>
-                                                <td>2009/01/12</td>
-                                                <td>
-                                                    <span class="badge bg-light-danger">Disabled</span>
-                                                    <div class="overlay-edit">
-                                                        <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn btn-primary"><i
-                                                                        class="ti ti-pencil f-18"></i></a></li>
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn bg-white btn-link-danger"><i
-                                                                        class="ti ti-trash f-18"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="d-inline-block align-middle">
-                                                        <img src="<?= BASE_PATH ?>/assets/images/user/avatar-4.jpg"
-                                                            alt="user image" class="img-radius align-top m-r-15"
-                                                            style="width: 40px" />
-                                                        <div class="d-inline-block">
-                                                            <h6 class="m-b-0">Cedric Kelly</h6>
-                                                            <p class="m-b-0 text-primary">Android developer</p>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>Senior Javascript Developer</td>
-                                                <td>Edinburgh</td>
-                                                <td>22</td>
-                                                <td>2012/03/29</td>
-                                                <td>
-                                                    <span class="badge bg-light-success">Active</span>
-                                                    <div class="overlay-edit">
-                                                        <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn btn-primary"><i
-                                                                        class="ti ti-pencil f-18"></i></a></li>
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn bg-white btn-link-danger"><i
-                                                                        class="ti ti-trash f-18"></i></a></li>
-                                                        </ul>
-                                                    </div>
+                                            <tr v-if="userData.length === 0">
+                                                <td colspan="6" class="text-center text-muted">
+                                                    No hay usuarios disponibles.
                                                 </td>
                                             </tr>
                                             <tr v-for="user in userData">
@@ -218,24 +109,32 @@ $users = $userController->obtener_usuarios();
                                                 <td>{{user.email}}</td>
                                                 <td v-if="user.phone_number == null">Sin numero</td>
                                                 <td v-else>{{user.phone_number}}</td>
-                                                <td>2008/11/28</td>
+                                                <td>{{user.created_at}}</td>
                                                 <td>
-                                                    <span class="badge bg-light-success">Active</span>
-                                                    <div class="overlay-edit">
+                                                    <div>
                                                         <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn btn-primary"><i
-                                                                        class="ti ti-pencil f-18"></i></a></li>
-                                                            <li class="list-inline-item m-0"><a href="#"
-                                                                    class="avtar avtar-s btn bg-white btn-link-danger"><i
-                                                                        class="ti ti-trash f-18"></i></a></li>
+                                                            <form method="POST" :id="'form_delete_profile_' + user.id">
+                                                                <input type="hidden" name="global_token"
+                                                                    value="<?php echo $_SESSION['global_token']; ?>">
+                                                                <input type="hidden" name="user_id" :value="user.id">
+                                                                <input type="hidden" name="action" value="eliminarUsuario">
+                                                                <li class="list-inline-item m-1"><a href="#"
+                                                                        class="avtar avtar-s btn btn-primary"><i
+                                                                            class="ti ti-pencil f-18"></i></a></li>
+                                                                <li class="list-inline-item m-0"><button
+                                                                        @click="abrir_sweet_alert(user.id)" type="button"
+                                                                        class="avtar avtar-s btn bg-white btn-link-danger"><i
+                                                                            class="ti ti-trash f-18"></i></button></li>
+                                                            </form>
+
                                                         </ul>
                                                     </div>
                                                 </td>
                                             </tr>
-
+                                            
                                         </tbody>
                                     </table>
+                                   
                                     <div class="d-flex justify-content-end">
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination">
@@ -268,65 +167,77 @@ $users = $userController->obtener_usuarios();
                 <!-- [ Main Content ] end -->
             </div>
         </div>
-    </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" enctype="multipart/form-data" id="form_add_profile">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="profilePic" class="form-label">Profile Picture</label>
+                                <input type="file" class="form-control" id="cover" name="cover" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="emailInput" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" v-model="agregar_email"
+                                    required aria-describedby="emailHelp">
+                                <label v-if="boolean_agregar_email" class="form-label" style="color: red;">The email is
+                                    not valid</label>
+
+                            </div>
+                            <div class="mb-3">
+                                <label for="firstNameInput" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" v-model="agregar_name">
+                                <label v-if="boolean_agregar_name" class="form-label" style="color: red;">The first name
+                                    is not valid</label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastNameInput" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" v-model="agregar_lastname">
+                                <label v-if="boolean_agregar_lastname" class="form-label" style="color: red;">The
+                                    lastname is not correct</label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phoneNumberInput" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" v-model="agregar_phone_number">
+                            </div>
+                            <label v-if="boolean_agregar_phone_number" class="form-label" style="color: red;">The
+                            phone number is not correct</label>
+                            <div class="mb-3">
+                                <select class="form-select" id="role_dropdown" name="role_dropdown" v-model="agregar_role"
+                                    aria-label="Default select example" required>
+                                    <option disabled selected value> -- Select a role </option>
+                                    <option value="Administrador">Administrador</option>
+
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" v-model="agregar_password">
+                                <label v-if="boolean_agregar_password" class="form-label" style="color: red;">The password must have at least 8 characters</label>
+                            </div>
+                            <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>">
+                            <input type="hidden" name="agregarUsuario" value="agregarUsuario">
 
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
-
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button @click="abrir_sweet_alert_agregar" type="button" class="btn btn-primary">Save
+                                changes</button>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="profilePic" class="form-label">Profile Picture</label>
-                            <input type="file" class="form-control" id="cover" name="cover">
-                        </div>
-                        <div class="mb-3">
-                            <label for="emailInput" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                aria-describedby="emailHelp">
-                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="firstNameInput" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="lastNameInput" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="phoneNumberInput" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
-                        </div>
-                        <div class="mb-3">
-                        <select class="form-select" id="role_dropdown" name="role_dropdown" aria-label="Default select example">
-                            <option disabled selected value> -- Select a role </option>
-                            <option value="Administrador">Administrador</option>
-                         
-                        </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
-                        <input type="hidden" name="global_token" value="<?php echo $_SESSION['global_token']; ?>">
-                        <input type="hidden" name="agregarUsuario" value="agregarUsuario">
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
+
+
+
     <!-- [ Main Content ] end -->
 
     <?php include "../layouts/footer.php" ?>
@@ -342,21 +253,95 @@ $users = $userController->obtener_usuarios();
             myInput.focus()
         })
     </script>
+
+    <?php
+    $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+    ?>
+
+
+    <script>
+        function abrir_sweet_alert(id) {
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+
+                        }).then(() => {
+                            document.getElementById('form_delete_profile').submit();
+                        });
+
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+
+        }
+
+
+    </script>
+
     <script>
         const { createApp, ref } = Vue
 
         createApp({
             setup() {
                 const message = ref('Hello vue!')
-                const users = ref(<?php echo json_encode($users); ?>);
-                const userData = ref(<?php echo json_encode($users); ?>.slice(0, 10));
 
                 //Lista de usuarios de 10 en 10
                 let variable_usuarios = ref(10)
                 let variable_rango_usuarios = ref(20)
                 let cantidad_paginas = ref(0);
-                let pagina_actual = ref(1);
+                const pagina_actual = ref(<?php echo $current_page; ?>);
+                const isLoading = ref(true);
 
+                const formatear_fecha = (fechaISO) => {
+                    const fecha = new Date(fechaISO);
+                    return fecha.toISOString().split('T')[0];
+                };
+
+                const users = ref(<?php echo json_encode($users); ?>.map(user => {
+                    return {
+                        ...user,
+                        created_at: formatear_fecha(user.created_at)
+                    };
+                }));
+                const userData = ref(users.value.slice(0, 10));
+
+                const cargarDatos = async () => {
+                    try {
+                        isLoading.value = true; 
+
+                        await new Promise(resolve => setTimeout(resolve, 650));
+
+                        //rocesa los datos después del retraso
+                        users.value = <?php echo json_encode($users); ?>.map(user => {
+                            return {
+                                ...user,
+                                created_at: formatear_fecha(user.created_at)
+                            };
+                        });
+
+                        const inicio = (pagina_actual.value - 1) * 10;
+                        const fin = inicio + 10;
+                        userData.value = users.value.slice(inicio, fin);
+
+                    } finally {
+                        isLoading.value = false;
+                    }
+                };
+
+                cargarDatos();
+
+                //VARIABLES AGREGAR USUARIO
+                let agregar_email = ref(""), agregar_name = ref(""), agregar_lastname = ref(""), agregar_phone_number = ref(""), agregar_role = ref(""), agregar_password = ref("");
+                let boolean_agregar_email = ref(false), boolean_agregar_name = ref(false), boolean_agregar_lastname = ref(false),  boolean_agregar_phone_number = ref(false),  boolean_agregar_role = ref(false),  boolean_agregar_password = ref(false);
 
                 return {
                     message,
@@ -365,35 +350,35 @@ $users = $userController->obtener_usuarios();
                     variable_usuarios,
                     variable_rango_usuarios,
                     cantidad_paginas,
-                    pagina_actual
+                    pagina_actual,
+                    isLoading,
+
+                    //AGREGAR USUARIO VARIABLES
+                    agregar_email, agregar_name, agregar_lastname,agregar_phone_number,agregar_role,agregar_password,
+                    boolean_agregar_email, boolean_agregar_name, boolean_agregar_lastname,boolean_agregar_phone_number,boolean_agregar_role,boolean_agregar_password
 
                 }
             },
             methods: {
-                pagina_siguiente() {
+                pagina_siguiente(numero) {
                     let ultima_pagina = false;
-                    console.log(this.users.length)
-                    if ((this.users.length - this.variable_usuarios) < 10) {
-
+                    if (this.pagina_actual == this.cantidad_paginas) {
                         ultima_pagina = true;
-
                     }
-                    if (this.variable_usuarios <= this.users.length && ultima_pagina == false) {
 
-                        this.userData = [];
+                    if (this.variable_usuarios <= this.users.length && !ultima_pagina) {
                         this.variable_usuarios += 10;
                         this.variable_rango_usuarios += 10;
-                        this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
-
+                        //this.userData = this.users.slice(this.variable_rango_usuarios, this.variable_rango_usuarios);
                         this.pagina_actual += 1;
+                        window.location.href = "./" + this.pagina_actual;
 
                     }
-
-
+                    
                 },
+               
                 pagina_anterior() {
                     let primera_pagina = false;
-                    console.log(this.users.length)
                     if (this.pagina_actual == 1) {
                         primera_pagina = true;
                     } else {
@@ -403,47 +388,126 @@ $users = $userController->obtener_usuarios();
                     if (this.variable_usuarios <= this.users.length && primera_pagina == false) {
                         this.variable_usuarios -= 10;
                         this.variable_rango_usuarios -= 10
-                        this.userData = [];
-                        this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
-                        ;
+                        //this.userData =this.users.slice(this.variable_rango_usuarios, this.variable_rango_usuarios);
                         this.pagina_actual -= 1;
-
+                        window.location.href = "./" + this.pagina_actual;
                     }
 
 
                 },
                 seleccionar_pagina(numero) {
                     this.pagina_actual = numero;
+                    const inicio = (numero - 1) * 10;
+                    const fin = inicio + 10;
 
-                    this.variable_usuarios = numero * 10;
-                    this.variable_rango_usuarios = (numero * 10) + 10;
-                    this.userData = [];
-                    this.userData = ref(<?php echo json_encode($users); ?>.slice(this.variable_usuarios, this.variable_rango_usuarios));
+                    this.variable_usuarios = inicio;
+                    this.variable_rango_usuarios = fin;
+                    //this.userData = this.users.slice(fin, fin);
+                    window.location.href = "./" + this.pagina_actual;
+                   
 
-
-
+                  
                 },
                 obtener_paginas() {
                     let contador = 0;
+                    this.cantidad_paginas = 0;
+                    
                     for (let index = 0; index < this.users.length; index++) {
-                        contador++
+                        contador++;
                         if (contador % 10 == 0) {
-                            this.cantidad_paginas++
+                            this.cantidad_paginas++;
                         }
-
                     }
 
-                }
+                    if (contador % 10 !== 0) {
+                        this.cantidad_paginas++;
+                    }
+                },
+                abrir_sweet_alert(id) {
+                    swal({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover this imaginary file!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                        .then((willDelete) => {
+                            if (willDelete) {
+                                swal("Poof! Your imaginary file has been deleted!", {
+                                    icon: "success",
+
+                                }).then(() => {
+                                    document.getElementById('form_delete_profile_' + id).submit();
+                                });
+
+                            } else {
+                                swal("Your imaginary file is safe!");
+                            }
+                        });
+
+                },
+
+                //AGREGAR USUARIO
+                abrir_sweet_alert_agregar() {
+                    //VALIDAR FORMULARIO AGREGAR USUARIO
+
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                    const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
+                    const lastnameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
+                    
+
+                    this.boolean_agregar_email = false;
+                    this.boolean_agregar_name = false;
+                    this.boolean_agregar_lastname = false;
+                    this.boolean_agregar_phone_number = false;
+
+                    let email_valido = emailRegex.test(this.agregar_email);
+                    let name_valido = nameRegex.test(this.agregar_name);
+                    let lastname_valido = lastnameRegex.test(this.agregar_lastname);
+                    let phone_number_valido = this.agregar_phone_number.length ==10;
+                    let password_valido = this.agregar_password.length >= 8;
+                 
+
+                    if (email_valido && name_valido && lastname_valido && phone_number_valido && password_valido) {
+                        swal({
+                            title: "Cambios realizados!",
+                            text: "Has actualizado tus datos de manera correcta!",
+                            icon: "success",
+                            button: "Aceptar",
+                        }).then(() => {
+                            document.getElementById('form_add_profile').submit();
+                        });
+
+
+                    }
+                    else {
+                        this.boolean_agregar_email = !email_valido;
+                        this.boolean_agregar_name = !name_valido;
+                        this.boolean_agregar_lastname = !lastname_valido;
+                        this.boolean_agregar_phone_number = !phone_number_valido;
+                        this.boolean_agregar_password = !password_valido;
+                    }
+                },
 
 
             },
             mounted() {
                 this.obtener_paginas();
+                const inicio = (this.pagina_actual - 1) * 10;
+                const fin = inicio + 10;
+
+                this.variable_usuarios = inicio;
+                this.variable_rango_usuarios = fin;
+                this.userData = this.users.slice(inicio, fin);
+
+                console.log("cantidad: " + this.cantidad_paginas)
+                console.log("pagina actual: " + this.pagina_actual)
 
             }
 
         }).mount('#app')
     </script>
+
 
     <?php include "../layouts/modals.php" ?>
 </body>
