@@ -56,6 +56,21 @@ if (isset($_POST['agregarUsuario'])) {
     }
 
 }
+
+if (isset($_POST['editUser'])) {
+    if ($_POST['global_token'] == $_SESSION['global_token']) {
+        $update_user_data = new UserController;
+        $usuario = $update_user_data->user_update($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phoneNumber'], $_POST['role_dropdown'], $_POST['user_id']);
+        header("refresh: 0"); 
+        exit();
+
+    } else {
+        echo 'El token no coincide';
+        echo 'Session: ' . $_SESSION['global_token'];
+        echo 'POST: ' . $_POST['global_token'];
+    }
+
+}
 class UserController
 {
     public function obtener_datos()
@@ -92,7 +107,7 @@ class UserController
         }
     }
 
-    public function user_update($name, $lastname, $phone_number, $role, $id)
+    public function user_update($name, $lastname, $email, $phone_number, $role, $id)
     {
         $curl = curl_init();
 
@@ -105,14 +120,12 @@ class UserController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_POSTFIELDS => 'name=' . $name . '&lastname=' . $lastname . '&phone_number=' . $phone_number . '&role=' . $role . '&id=' . $id . '',
+            CURLOPT_POSTFIELDS => 'name=' . $name . '&lastname=' . $lastname . '&email='. $email . '&phone_number=' . $phone_number . '&role=' . $role . '&id=' . $id . '',
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded',
                 'Authorization: Bearer ' . $_SESSION['user_data']['token'] . ''
             ),
         ));
-
-        $_SESSION['user_data']['name'] = $name;
 
         $response = curl_exec($curl);
 

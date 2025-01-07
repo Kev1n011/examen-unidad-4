@@ -3,11 +3,18 @@ include "../../app/global_token.php";
 include_once '../../app/AuthController.php';
 include "../../app/userController.php";
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+
 $userController = new UserController();
 $user = $userController->obtener_datos();
+
+?>
+
+
+<?php
+    //VALIDAR SI ESTÁ LOGUEADO
+    if(!isset($_SESSION['logeado'])){
+        header('Location: '.BASE_PATH.'');
+    }
 
 ?>
 <!doctype html>
@@ -30,6 +37,7 @@ $user = $userController->obtener_datos();
             <div class="loader-fill"></div>
         </div>
     </div>
+   
 
     <!-- [ Pre-loader ] End -->
 
@@ -54,6 +62,7 @@ $user = $userController->obtener_datos();
                         <div class="row align-items-center">
                             <div class="col-md-12">
                                 <ul class="breadcrumb">
+                                   
                                     <li class="breadcrumb-item"><a href="<?= BASE_PATH ?>home">Home</a></li>
                                     <li class="breadcrumb-item"><a href="javascript: void(0)">Users</a></li>
                                     <li class="breadcrumb-item" aria-current="page">Account Profile</li>
@@ -62,6 +71,7 @@ $user = $userController->obtener_datos();
                             <div class="col-md-12">
                                 <div class="page-header-title">
                                     <h2 class="mb-0">Account Profile</h2>
+                                  
                                 </div>
                             </div>
                         </div>
