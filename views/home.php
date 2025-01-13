@@ -25,6 +25,9 @@
     <!-- [ Main Content ] start -->
     
      <!-- [ Main Content ] start -->
+      <div id="app">
+        
+      </div>
     <div class="pc-container">
       <div class="pc-content">
         <!-- [ breadcrumb ] start -->

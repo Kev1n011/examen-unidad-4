@@ -1,10 +1,11 @@
 <?php
 
 include "../../app/config.php";
-include "../../app/userController.php";
+include "../../app/clientController.php";
 
-$userController = new UserController();
-$users = $userController->obtener_usuarios();
+$clientController = new ClientController();
+$clients = $clientController->get_clients();
+
 ?>
 
 <?php
@@ -431,12 +432,7 @@ if (!isset($_SESSION['logeado'])) {
                     return fecha.toISOString().split('T')[0];
                 };
 
-                const users = ref(<?php echo json_encode($users); ?>.map(user => {
-                    return {
-                        ...user,
-                        created_at: formatear_fecha(user.created_at)
-                    };
-                }));
+                const users = ref(<?php echo json_encode($clients); ?>);
                 const userData = ref(users.value.slice(0, 10));
 
                 const cargarDatos = async () => {
@@ -446,7 +442,7 @@ if (!isset($_SESSION['logeado'])) {
                         await new Promise(resolve => setTimeout(resolve, 650));
 
                         //rocesa los datos después del retraso
-                        users.value = <?php echo json_encode($users); ?>.map(user => {
+                        users.value = <?php echo json_encode($clients); ?>.map(user => {
                             return {
                                 ...user,
                                 created_at: formatear_fecha(user.created_at)

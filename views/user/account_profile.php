@@ -5,17 +5,23 @@ include "../../app/userController.php";
 
 
 $userController = new UserController();
-$user = $userController->obtener_datos();
+$user = $userController->get_user();
+
+
+
 
 ?>
 
 
 <?php
-    //VALIDAR SI ESTÁ LOGUEADO
-    if(!isset($_SESSION['logeado'])){
-        header('Location: '.BASE_PATH.'');
-    }
-
+//VALIDAR SI ESTÁ LOGUEADO
+if (!isset($_SESSION['logeado'])) {
+    header('Location: ' . BASE_PATH . '');
+}
+if ($_GET['id'] != $user['id'] || $_GET['name'] != $user['name']) {
+    echo "No cuentas con los permisos necesarios";
+    exit;
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -37,7 +43,7 @@ $user = $userController->obtener_datos();
             <div class="loader-fill"></div>
         </div>
     </div>
-   
+
 
     <!-- [ Pre-loader ] End -->
 
@@ -52,34 +58,33 @@ $user = $userController->obtener_datos();
     <!-- [ Pre-loader ] End -->
     <?php include "../layouts/sidebar.php" ?>
     <?php include "../layouts/navbar.php" ?>
+    <div class="pc-container">
+        <div class="pc-content">
+            <!-- [ breadcrumb ] start -->
+            <div class="page-header">
+                <div class="page-block">
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <ul class="breadcrumb">
 
-    <div id="app">
-        <div class="pc-container">
-            <div class="pc-content">
-                <!-- [ breadcrumb ] start -->
-                <div class="page-header">
-                    <div class="page-block">
-                        <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <ul class="breadcrumb">
-                                   
-                                    <li class="breadcrumb-item"><a href="<?= BASE_PATH ?>home">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0)">Users</a></li>
-                                    <li class="breadcrumb-item" aria-current="page">Account Profile</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="page-header-title">
-                                    <h2 class="mb-0">Account Profile</h2>
-                                  
-                                </div>
+                                <li class="breadcrumb-item"><a href="<?= BASE_PATH ?>home">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0)">Users</a></li>
+                                <li class="breadcrumb-item" aria-current="page">Account Profile</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="page-header-title">
+                                <h2 class="mb-0">Account Profile</h2>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- [ breadcrumb ] end -->
+            </div>
+            <!-- [ breadcrumb ] end -->
 
-                <!-- [ Main Content ] start -->
+            <!-- [ Main Content ] start -->
+            <div id="app">
                 <div class="row">
                     <!-- [ sample-page ] start -->
                     <div class="col-sm-12">
@@ -159,7 +164,8 @@ $user = $userController->obtener_datos();
                                             id="user-set-profile-tab" data-bs-toggle="pill" href="#user-set-profile"
                                             role="tab" aria-controls="user-set-profile" aria-selected="true">
                                             <span class="f-w-500"><i
-                                                    class="ph-duotone ph-user-circle m-r-10"></i>Profile Overview</span>
+                                                    class="ph-duotone ph-user-circle m-r-10"></i>Profile
+                                                Overview</span>
                                         </a>
                                         <a class="nav-link list-group-item list-group-item-action"
                                             id="user-set-information-tab" data-bs-toggle="pill"
@@ -185,7 +191,8 @@ $user = $userController->obtener_datos();
                                             id="user-set-email-tab" data-bs-toggle="pill" href="#user-set-email"
                                             role="tab" aria-controls="user-set-email" aria-selected="false">
                                             <span class="f-w-500"><i
-                                                    class="ph-duotone ph-envelope-open m-r-10"></i>Email settings</span>
+                                                    class="ph-duotone ph-envelope-open m-r-10"></i>Email
+                                                settings</span>
                                         </a>
                                     </div>
                                 </div>
@@ -487,7 +494,7 @@ $user = $userController->obtener_datos();
                                     </div>
                                     <div class="tab-pane fade" id="user-set-information" role="tabpanel"
                                         aria-labelledby="user-set-information-tab">
-                                        <form method="POST" id="form_update_profile">
+                                        <form method="POST" enctype="multipart/form-data" id="form_update_profile">
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h5>Personal Information</h5>
@@ -499,34 +506,41 @@ $user = $userController->obtener_datos();
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label class="form-label">First Name</label>
-                                                                <input type="text" name="name" class="form-control"
+                                                                <input type="text" name="firstName" class="form-control"
                                                                     v-model="userData.name" placeholder="First name" />
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Last Name</label>
-                                                                <input type="text" name="lastname" class="form-control"
+                                                                <input type="text" name="lastName" class="form-control"
                                                                     v-model="userData.lastname"
                                                                     placeholder="Last name" />
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
+                                                                <label class="form-label">Email</label>
+                                                                <input type="text" name="email" class="form-control"
+                                                                    v-model="userData.email" placeholder="Email" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
                                                                 <label class="form-label">Role</label>
-                                                                <input type="text" name="role" class="form-control"
-                                                                    v-model="userData.role" placeholder="Role" />
+                                                                <input type="text" name="role_dropdown"
+                                                                    class="form-control" v-model="userData.role"
+                                                                    placeholder="Role" />
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Phone Number</label>
                                                                 <input v-if="userData.phone_number == null"
-                                                                    name="phone_number" type="text" class="form-control"
+                                                                    name="phoneNumber" type="text" class="form-control"
                                                                     placeholder="Add Number" />
-                                                                <input v-else type="text" name="phone_number"
-                                                                    class="form-control"
-                                                                    v-model="userData.phone_number" />
+                                                                <input v-else type="text" name="phoneNumber"
+                                                                    class="form-control" v-model="phone_number" />
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-12">
@@ -552,7 +566,7 @@ $user = $userController->obtener_datos();
                                             </div>
                                             <input type="hidden" name="global_token"
                                                 value="<?php echo $_SESSION['global_token']; ?>">
-                                            <input type="hidden" name="id" value="<?php echo $_SESSION['user_id'] ?>">
+                                            <input type="hidden" name="user_id" v-model="user_id">
                                             <input type="hidden" name="action" value="action">
 
 
@@ -1043,11 +1057,11 @@ $user = $userController->obtener_datos();
                     </div>
                     <!-- [ sample-page ] end -->
                 </div>
-                <!-- [ Main Content ] end -->
+
             </div>
+            <!-- [ Main Content ] end -->
         </div>
     </div>
-
 
     <!-- [ Main Content ] end -->
 
@@ -1080,19 +1094,26 @@ $user = $userController->obtener_datos();
         createApp({
             setup() {
                 const message = ref('Hello vue!')
-                // Obtén los datos de PHP pasados a Vue como un objeto JSON
                 const userData = ref(<?php echo json_encode($user); ?>);
 
-                const apellidos = ref(userData.value.lastname);
-                const apellidosArray = apellidos.value.split(' ');
+                const apellidos = ref(userData.value.lastname || '');
+
+                const apellidosArray = apellidos.value && typeof apellidos.value === 'string' && apellidos.value.includes(' ')
+                    ? apellidos.value.split(' ')
+                    : [apellidos.value];
+
                 const apellido_paterno = ref(apellidosArray[0]);
                 const apellido_materno = ref(apellidosArray[1] || '');
+                const phone_number = ref(userData.value.phone_number);
+                const user_id = ref(userData.value.id)
                 return {
                     message,
                     userData,
                     apellidos,
                     apellido_paterno,
-                    apellido_materno
+                    apellido_materno,
+                    phone_number,
+                    user_id
                 }
             }
         }).mount('#app')

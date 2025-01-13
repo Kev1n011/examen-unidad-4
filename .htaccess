@@ -9,10 +9,14 @@ RewriteRule ^home/?$ views/home.php
 RewriteRule ^forgot_password/?$ views/user/forgot_password.php 
 
 #ACCOUNT
-RewriteRule ^my_account/([a-zA-Z\-]+)/?$ views/user/account_profile.php?name=$1 [L]
+RewriteRule ^my_account/([a-zA-Z\-]+)/([0-9]+)/?$ views/user/account_profile.php?name=$1&id=$2 [L]
 
 #USERS
-RewriteRule ^users/user_list/?$ views/users/user_list.php?  
+RewriteRule ^users/user_list/page/([0-9]+)/?$ views/users/user_list.php?page=$1 [L]
+RewriteRule ^users/user_details/([0-9]+)/?$ views/users/user_details.php?user_id=$1 [L]
+
+#CLIENTS
+RewriteRule ^clients/client_list/page/([0-9]+)/?$ views/clients/client_list.php?page=$1 [L]
 
 #PRODUCTS
 RewriteRule ^products/?$ views/products/index.php 

@@ -31121,6 +31121,7 @@ div.dataTables_wrapper div.dt-row {
 }
 
 
+
 @media (max-width: 1199.98px) {
   .pc-box-width {
     display: none;
@@ -31134,6 +31135,7 @@ div.dataTables_wrapper div.dt-row {
 .auth-main ~ .pct-offcanvas .pc-boxcontainer {
   display: none;
 }
+
 
 
 

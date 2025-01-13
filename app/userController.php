@@ -7,14 +7,17 @@ if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'action':
             $user = new UserController;
-            $update_data = $user->user_update($_POST['name'], $_POST['lastname'], $_POST['phone_number'], $_POST['role'], $_POST['id']);
+            $update_data = $user->user_update($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phoneNumber'], $_POST['role_dropdown'], $_POST['user_id']);
 
             header("Location: " . BASE_PATH . "my_account/" . str_replace(' ', '-', $_SESSION['user_data']['name']));
             exit;
         case 'eliminarUsuario':
             $user = new UserController;
             $user_eliminado = $user->eliminar_usuario($_POST['user_id']);
-            header("refresh: 0");   
+            header("refresh: 0");
+            exit;
+        case 'user_details':
+            header("Location: " . BASE_PATH . "users/user_details/" . $_POST['user_id']);
             exit;
 
     }
@@ -41,12 +44,11 @@ if (isset($_POST['agregarUsuario'])) {
             $cover_nuevo = uniqid('', true) . '_' . $cover_nombre_actual . '.' . $cover_extension_actual; //Se le asigna un id unico al nombre del archivo para evitar que se repita
             $cover_folder = './uploads/' . $cover_nuevo;
             move_uploaded_file($cover_tmp, $cover_folder);
-            $usuario = $nuevo_usuario->crear_usuario($_POST['firstName'], $_POST['lastname'], $_POST['email'], $_POST['phoneNumber'], $_POST['role_dropdown'], $_POST['password'], $cover_folder);
+            $usuario = $nuevo_usuario->crear_usuario($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phoneNumber'], $_POST['role_dropdown'], $_POST['password'], $cover_folder);
         } else {
             echo 'Archivo no permitido';
         }
-        echo $_FILES['cover']['name'];
-        header("refresh: 0"); 
+        header("refresh: 0");
         exit();
 
     } else {
@@ -59,9 +61,10 @@ if (isset($_POST['agregarUsuario'])) {
 
 if (isset($_POST['editUser'])) {
     if ($_POST['global_token'] == $_SESSION['global_token']) {
+        //var_dump($_POST); // Para ver los datos enviados
         $update_user_data = new UserController;
         $usuario = $update_user_data->user_update($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phoneNumber'], $_POST['role_dropdown'], $_POST['user_id']);
-        header("refresh: 0"); 
+        header("refresh: 0");
         exit();
 
     } else {
@@ -107,6 +110,34 @@ class UserController
         }
     }
 
+    public function get_user()
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/users/'.$_SESSION['user_id']. '',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $_SESSION['user_data']['token'] . '',
+                'Cookie: XSRF-TOKEN=eyJpdiI6ImhITi94YWVPZTVON3NkMmdxYUtNdWc9PSIsInZhbHVlIjoicUJabU1OL2xJUzNrODI0MVo0bDhyWGdPY3hIdlVlSE56TXNrTXlyeWlINDBrTHBFYUY4dkVqRHgxSXBxdCtwakxaLzJOMkxPVmdCWkhLR0Y2am5nd0ZCWjVHRFA5d25kU2lLRWZldWp2YVA2UUprcHpNMS9kbWdHOUdHakMyMk8iLCJtYWMiOiI4NDVjZmFkNjliM2JjMjcyNTJlNWE1ZDYxNjU5NjY5NThmODc0NmJjNDNkOWU0MWI5NTBmMDk0Y2JlZTA0Y2U4IiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6Ik1tSk0xUTRScG5vL1JFUjRiZXdqaFE9PSIsInZhbHVlIjoiWjZkcUFadVZYVUxNWUVyc0U1dm1ib0lVODUzMUN4dUlwVXY3QW9FOXdLNCtmdUdmUDNCbzNqVGFSUmgzN2ZKcEdVc1hnZmJCd0w1TURtTU5LQzJpalhCeFFZbnljQmI0TmpuQklLVmJHMmdpVTBOeE1XQ1YrenFHaHRnaFJnNFYiLCJtYWMiOiI4ZGNhMjRjZDI3NzE1MjcyMWZlNDU5YTI1NmZkN2E5ODUyNjY2YjI4NDRjNmIwOTgxODU2NjM1YjgwYjQ4NzMxIiwidGFnIjoiIn0%3D'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close(handle: $curl);
+
+        $response = json_decode($response, true);
+        return $response['data'];
+
+    }
+
     public function user_update($name, $lastname, $email, $phone_number, $role, $id)
     {
         $curl = curl_init();
@@ -120,15 +151,15 @@ class UserController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_POSTFIELDS => 'name=' . $name . '&lastname=' . $lastname . '&email='. $email . '&phone_number=' . $phone_number . '&role=' . $role . '&id=' . $id . '',
+            CURLOPT_POSTFIELDS => 'name=' . $name . '&lastname=' . $lastname . '&email=' . $email . '&phone_number=' . $phone_number . '&role=' . $role . '&id=' . $id . '',
             CURLOPT_HTTPHEADER => array(
                 'Content-Type: application/x-www-form-urlencoded',
-                'Authorization: Bearer ' . $_SESSION['user_data']['token'] . ''
+                'Authorization: Bearer ' . $_SESSION['user_data']['token'] . '',
+                'Cookie: XSRF-TOKEN=eyJpdiI6Imxza1BXR0cyejBXWHB2LzFEbEZKbUE9PSIsInZhbHVlIjoiNDNBMFNITHFPQjFBL0lMRUl6ZUFhcWpGdWt6K1JOejgzbnZjZVRZVHVENlFOUDd1c2xFQ0FTcXNVQVFWOGtlM2lleUhXbGFLWWFQcDBSREFOTzVIQ2RwemZRWERoSWNWSkJHMmtpZnFwRzFROXF6cm93T0lJblB0UGs0SWl1NVQiLCJtYWMiOiI2NTAyYWVkYzg0ZTVlODlmZTM3NGUzMDU4YWJkMTNiNWRkYmJhNjcxZTA5ODNlM2M0NzU4M2U1YjNhMjhiMzdkIiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6Ikh4MGFqSWFMVk0vTXMzcHFTaDkySUE9PSIsInZhbHVlIjoiMHJvRCtWZnNJd05wSTk3QVFZUVRUY2RIaXBjcmxtSWwweDM5RWlUdmE2THRCOW4xR0xNdTlXQXJsNk8zMXhrNXRMbGxrOEZjMjZIUHB5Y3NFdDlVQzZzeEFNVVBnSHN5ekNKUmIzU1JOV2dmQThFLzk0empLTlpZWU1Ybzd4TjciLCJtYWMiOiI1NGY0ODk0NWYyZTczYjc4NDA1ZWUzZjk2MWFkN2VjYWUxYzJmZDllNTA1MzMxZTU4MzIxOGJmNDEyMmNiMGNkIiwidGFnIjoiIn0%3D'
             ),
         ));
 
         $response = curl_exec($curl);
-
         curl_close($curl);
         return $response;
     }
@@ -148,7 +179,8 @@ class UserController
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer 971|iZMw6FU4TLrXEtIDdzuaqosqU1Piq0o14lX2Jdy3'
+                'Authorization: Bearer ' . $_SESSION['user_data']['token'] . ''
+
             ),
         ));
 
@@ -200,7 +232,7 @@ class UserController
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/users/'.$user_id.'',
+            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/users/' . $user_id . '',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -215,11 +247,38 @@ class UserController
         ));
 
         $response = curl_exec($curl);
-        
+
 
         curl_close($curl);
         return $response;
 
+    }
+
+    public function get_user_details($user_id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/users/' .$user_id. '',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $_SESSION['user_data']['token'] . '',
+            'Cookie: XSRF-TOKEN=eyJpdiI6ImFHRkRxTUc4OGFLaDQvNmYrSUNoMnc9PSIsInZhbHVlIjoiV3d6bmFEM3NZZzRuUzNVWW1xb0lEVXFrejBZWjZFN1VOL1I2elNKNFBqUGdudjRqZCthR0JLc0JFaVc5NEplNTVWVUlvWWVjOWlZMDNzR3JyNEE5azU3MTg4YkpaOEd2aHdQZm10RDlxVDcybTRDcTFGdEo3YUdVWlRFNUp2bGQiLCJtYWMiOiIyZjVkNWM5NDEyMDI0MWJhOWE4ODY4NTMwYTBiNTljMmZiYTg2NjU1YzlkZDY5MTA0NWEwNmMzNDE5ZjZhZTU5IiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6IkdFZWpRRnh1R2NSVEFrN2g2eTdwVGc9PSIsInZhbHVlIjoiaVU2Q1duOXVhMkFkaFN5TDZFVVFwOU9tM1BpUVVSU3lJSEc0Nll4bk9wVEp4bUJ0ZVd0UzVNaG5GaktDWGhwY2U2SG9NOVhmbys1SFhiQzBTZFJyMHRQZTVUeGhkQ1RaNTg3Ym5meGRMMVFhMzJQaVFtcmIyMEtyejI2eXVFVEIiLCJtYWMiOiI0NjE1ZmRkMzZhZTNlYWY5ZTE1ZGM0NGYzZTRiNTM3MWVlN2QwMTA0ZDEwMGQ1MjYwNTk4ZDJjYWQ3ZjQyM2RkIiwidGFnIjoiIn0%3D'
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        $response = json_decode($response, true);
+
+
+        curl_close($curl);
+        return $response['data'];
     }
 }
 ?>
