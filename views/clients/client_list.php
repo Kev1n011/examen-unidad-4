@@ -74,7 +74,7 @@ if (!isset($_SESSION['logeado'])) {
             <div id="app">
                 <div class="d-flex justify-content-end">
                     <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
-                        User</div>
+                        Client</div>
                 </div>
                 <div class="row">
                     <!-- [ sample-page ] start -->
@@ -92,10 +92,8 @@ if (!isset($_SESSION['logeado'])) {
                                         <thead>
                                             <tr>
                                                 <th>Name</th>
-                                                <th>Role</th>
                                                 <th>Email</th>
                                                 <th>Phone number</th>
-                                                <th>Creation date</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -117,11 +115,9 @@ if (!isset($_SESSION['logeado'])) {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>{{user.role}}</td>
                                                 <td>{{user.email}}</td>
                                                 <td v-if="user.phone_number == null">Sin numero</td>
                                                 <td v-else>{{user.phone_number}}</td>
-                                                <td>{{user.created_at}}</td>
                                                 <td>
                                                     <div>
                                                         <ul class="list-inline mb-0 d-flex align-items-center">
@@ -204,16 +200,20 @@ if (!isset($_SESSION['logeado'])) {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add client</h1>
 
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form method="POST" enctype="multipart/form-data" id="form_add_profile">
+                            <form method="POST" enctype="multipart/form-data" id="form_add_client">
                                 <div class="modal-body">
                                     <div class="mb-3">
-                                        <label for="profilePic" class="form-label">Profile Picture</label>
-                                        <input type="file" class="form-control" id="cover" name="cover" required>
+                                        <label for="firstNameInput" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            v-model="agregar_name">
+                                        <label v-if="boolean_agregar_name" class="form-label" style="color: red;">The
+                                            first name
+                                            is not valid</label>
                                     </div>
                                     <div class="mb-3">
                                         <label for="emailInput" class="form-label">Email address</label>
@@ -223,39 +223,15 @@ if (!isset($_SESSION['logeado'])) {
                                             email is
                                             not valid</label>
 
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="firstNameInput" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="firstName" name="firstName"
-                                            v-model="agregar_name">
-                                        <label v-if="boolean_agregar_name" class="form-label" style="color: red;">The
-                                            first name
-                                            is not valid</label>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="lastNameInput" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="lastName" name="lastName"
-                                            v-model="agregar_lastname">
-                                        <label v-if="boolean_agregar_lastname" class="form-label"
-                                            style="color: red;">The
-                                            lastname is not correct</label>
-                                    </div>
+                                    </div>                               
                                     <div class="mb-3">
                                         <label for="phoneNumberInput" class="form-label">Phone Number</label>
-                                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                                        <input type="text" class="form-control" id="phone_number" name="phone_number"
                                             v-model="agregar_phone_number">
                                     </div>
                                     <label v-if="boolean_agregar_phone_number" class="form-label"
                                         style="color: red;">The
                                         phone number is not correct</label>
-                                    <div class="mb-3">
-                                        <select class="form-select" id="role_dropdown" name="role_dropdown"
-                                            v-model="agregar_role" aria-label="Default select example" required>
-                                            <option disabled selected value> -- Select a role </option>
-                                            <option value="Administrador">Administrador</option>
-
-                                        </select>
-                                    </div>
                                     <div class="mb-3">
                                         <label for="inputPassword" class="form-label">Password</label>
                                         <input type="password" class="form-control" id="password" name="password"
@@ -266,7 +242,7 @@ if (!isset($_SESSION['logeado'])) {
                                     </div>
                                     <input type="hidden" name="global_token"
                                         value="<?php echo $_SESSION['global_token']; ?>">
-                                    <input type="hidden" name="agregarUsuario" value="agregarUsuario">
+                                    <input type="hidden" name="action" value="add_client">
 
 
                                 </div>
@@ -287,7 +263,7 @@ if (!isset($_SESSION['logeado'])) {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client</h1>
 
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
@@ -590,14 +566,14 @@ if (!isset($_SESSION['logeado'])) {
                     let password_valido = this.agregar_password.length >= 8;
 
 
-                    if (email_valido && name_valido && lastname_valido && phone_number_valido && password_valido) {
+                    if (email_valido && name_valido && phone_number_valido && password_valido) {
                         swal({
                             title: "Cambios realizados!",
                             text: "Has actualizado tus datos de manera correcta!",
                             icon: "success",
                             button: "Aceptar",
                         }).then(() => {
-                            document.getElementById('form_add_profile').submit();
+                            document.getElementById('form_add_client').submit();
                         });
 
 
