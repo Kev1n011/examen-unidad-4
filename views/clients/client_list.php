@@ -2,9 +2,13 @@
 
 include "../../app/config.php";
 include "../../app/clientController.php";
+include "../../app/levelController.php";
 
 $clientController = new ClientController();
 $clients = $clientController->get_clients();
+
+$levelsController = new LevelController();
+$levels = $levelsController->get_levels();
 
 ?>
 
@@ -94,6 +98,7 @@ if (!isset($_SESSION['logeado'])) {
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Phone number</th>
+                                                <th>Level</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -118,6 +123,8 @@ if (!isset($_SESSION['logeado'])) {
                                                 <td>{{user.email}}</td>
                                                 <td v-if="user.phone_number == null">Sin numero</td>
                                                 <td v-else>{{user.phone_number}}</td>
+                                                <td v-if="user.level && user.level.name">{{ user.level.name }}</td>
+                                                <td v-else>Sin nivel</td>
                                                 <td>
                                                     <div>
                                                         <ul class="list-inline mb-0 d-flex align-items-center">
@@ -263,13 +270,21 @@ if (!isset($_SESSION['logeado'])) {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Client</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Client</h1>
 
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form method="POST" enctype="multipart/form-data" id="form_edit_profile">
+                            <form method="POST" enctype="multipart/form-data" id="form_edit_client">
                                 <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="firstNameInput" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name"
+                                            v-model="agregar_name">
+                                        <label v-if="boolean_agregar_name" class="form-label" style="color: red;">The
+                                            first name
+                                            is not valid</label>
+                                    </div>
                                     <div class="mb-3">
                                         <label for="emailInput" class="form-label">Email address</label>
                                         <input type="email" class="form-control" id="edit_email" name="email"
@@ -278,45 +293,36 @@ if (!isset($_SESSION['logeado'])) {
                                             email is
                                             not valid</label>
 
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="firstNameInput" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="edit_firstName" name="firstName"
-                                            v-model="agregar_name">
-                                        <label v-if="boolean_agregar_name" class="form-label" style="color: red;">The
-                                            first name
-                                            is not valid</label>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="lastNameInput" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="edit_lastName" name="lastName"
-                                            v-model="agregar_lastname">
-                                        <label v-if="boolean_agregar_lastname" class="form-label"
-                                            style="color: red;">The
-                                            lastname is not correct</label>
-                                    </div>
+                                    </div>                         
                                     <div class="mb-3">
                                         <label for="phoneNumberInput" class="form-label">Phone Number</label>
-                                        <input type="text" class="form-control" id="edit_phoneNumber" name="phoneNumber"
+                                        <input type="text" class="form-control" id="phone_number" name="phone_number"
                                             v-model="agregar_phone_number">
                                     </div>
                                     <label v-if="boolean_agregar_phone_number" class="form-label"
                                         style="color: red;">The
-                                        phone number is not correct</label>
+                                        phone number is not correct
+                                    </label>
                                     <div class="mb-3">
-                                        <label for="roleInput" class="form-label">Rol</label>
-                                        <select class="form-select" id="edit_role_dropdown" name="role_dropdown"
-                                            v-model="agregar_role" aria-label="Default select example" required>
-                                            <option disabled selected value> -- Select a role </option>
-                                            <option value="Administrador">Administrador</option>
-
+                                        <label class="form-label">Level</label>
+                                        <select class="form-select" name="level_id" id="select_level"
+                                                aria-label="Default select example">
+                                            <!-- Primera opción: Nivel actual -->
+                                            <option :value="level">{{ level_name }}</option>
+                                            
+                                            <!-- Opciones restantes: Todos los niveles excepto el nivel actual -->
+                                            <option v-for="level in levels.filter(l => l.id !== level)" 
+                                                :key="level.id" 
+                                                :value="level.id">
+                                                {{ level.name }}
+                                            </option>
                                         </select>
-                                    </div>
+                                    </div>                            
 
                                     <input type="hidden" name="global_token"
                                         value="<?php echo $_SESSION['global_token']; ?>">
-                                    <input type="hidden" name="user_id" v-model="user_id">
-                                    <input type="hidden" name="editUser" value="editUser">
+                                    <input type="hidden" name="client_id" v-model="client_id">
+                                    <input type="hidden" name="action" value="update_client">
 
 
                                 </div>
@@ -403,28 +409,17 @@ if (!isset($_SESSION['logeado'])) {
                 const pagina_actual = ref(<?php echo $current_page; ?>);
                 const isLoading = ref(true);
 
-                const formatear_fecha = (fechaISO) => {
-                    const fecha = new Date(fechaISO);
-                    return fecha.toISOString().split('T')[0];
-                };
-
+              
                 const users = ref(<?php echo json_encode($clients); ?>);
+                const levels = ref(<?php echo json_encode($levels); ?>);
                 const userData = ref(users.value.slice(0, 10));
 
-                const cargarDatos = async () => {
+                const cargarDatos = async () => { //Permite que haya un tiempo de espera antes de que carguen los datos
                     try {
                         isLoading.value = true;
 
                         await new Promise(resolve => setTimeout(resolve, 650));
-
-                        //rocesa los datos después del retraso
-                        users.value = <?php echo json_encode($clients); ?>.map(user => {
-                            return {
-                                ...user,
-                                created_at: formatear_fecha(user.created_at)
-                            };
-                        });
-
+                       
                         const inicio = (pagina_actual.value - 1) * 10;
                         const fin = inicio + 10;
                         userData.value = users.value.slice(inicio, fin);
@@ -437,13 +432,15 @@ if (!isset($_SESSION['logeado'])) {
                 cargarDatos();
 
                 //VARIABLES AGREGAR USUARIO
-                let agregar_email = ref(""), agregar_name = ref(""), agregar_lastname = ref(""), agregar_phone_number = ref(""), agregar_role = ref(""), agregar_password = ref(""), user_id = ref("");
+                let agregar_email = ref(""), agregar_name = ref(""), agregar_lastname = ref(""), agregar_phone_number = ref(""), agregar_role = ref(""), agregar_password = ref(""), client_id = ref("");
                 let boolean_agregar_email = ref(false), boolean_agregar_name = ref(false), boolean_agregar_lastname = ref(false), boolean_agregar_phone_number = ref(false), boolean_agregar_role = ref(false), boolean_agregar_password = ref(false);
-
+                let level = ref(""); let level_name = ref("");
                 return {
                     message,
                     userData,
                     users,
+                    levels,
+                    level, level_name,
                     variable_usuarios,
                     variable_rango_usuarios,
                     cantidad_paginas,
@@ -451,7 +448,7 @@ if (!isset($_SESSION['logeado'])) {
                     isLoading,
 
                     //AGREGAR USUARIO VARIABLES
-                    agregar_email, agregar_name, agregar_lastname, agregar_phone_number, agregar_role, agregar_password, user_id,
+                    agregar_email, agregar_name, agregar_lastname, agregar_phone_number, agregar_role, agregar_password, level, client_id,
                     boolean_agregar_email, boolean_agregar_name, boolean_agregar_lastname, boolean_agregar_phone_number, boolean_agregar_role, boolean_agregar_password
 
                 }
@@ -591,28 +588,25 @@ if (!isset($_SESSION['logeado'])) {
 
                     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
                     const nameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
-                    const lastnameRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/;
 
 
                     this.boolean_agregar_email = false;
                     this.boolean_agregar_name = false;
-                    this.boolean_agregar_lastname = false;
                     this.boolean_agregar_phone_number = false;
 
                     let email_valido = emailRegex.test(this.agregar_email);
                     let name_valido = nameRegex.test(this.agregar_name);
-                    let lastname_valido = lastnameRegex.test(this.agregar_lastname);
                     let phone_number_valido = this.agregar_phone_number.length == 10;
 
 
-                    if (email_valido && name_valido && lastname_valido && phone_number_valido) {
+                    if (email_valido && name_valido && phone_number_valido) {
                         swal({
                             title: "Cambios realizados!",
                             text: "Has actualizado tus datos de manera correcta!",
                             icon: "success",
                             button: "Aceptar",
                         }).then(() => {
-                            document.getElementById('form_edit_profile').submit();
+                            document.getElementById('form_edit_client').submit();
                         });
 
 
@@ -620,7 +614,6 @@ if (!isset($_SESSION['logeado'])) {
                     else {
                         this.boolean_agregar_email = !email_valido;
                         this.boolean_agregar_name = !name_valido;
-                        this.boolean_agregar_lastname = !lastname_valido;
                         this.boolean_agregar_phone_number = !phone_number_valido;
                     }
                 },
@@ -628,13 +621,14 @@ if (!isset($_SESSION['logeado'])) {
 
                 cargarUsuario(usuario) {
                     this.agregar_name = usuario.name;
-                    this.agregar_lastname = usuario.lastname;
                     this.agregar_email = usuario.email;
                     //this.correo_actual = usuario.phone_number;
                     this.agregar_phone_number = usuario.phone_number;
                     this.agregar_role = usuario.role;
-                    this.user_id = usuario.id;
-                    console.log(this.user_id)
+                    this.level = usuario.level.id;
+                    this.level_name = usuario.level.name
+                    this.client_id = usuario.id;
+                    console.log("Nivel: " + this.level)
 
                  
                 },
@@ -682,6 +676,9 @@ if (!isset($_SESSION['logeado'])) {
                         this.reiniciar_campos();
                     });
                 }
+
+
+                
             }
 
         }).mount('#app')
