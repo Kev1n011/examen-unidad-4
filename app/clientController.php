@@ -18,8 +18,11 @@ if (isset($_POST['action'])) {
 
             header("refresh: 0");
             exit;
-        case 'user_details':
+        case 'delete_client':
+            $client = new ClientController;
+            $delete_client = $client->delete_client($_POST['client_id']);
 
+            header("refresh: 0");
             exit;
 
     }
@@ -100,6 +103,30 @@ class ClientController
         CURLOPT_POSTFIELDS => 'name='.$name.'&email='.$email.'&phone_number='.$phone_number.'&is_suscribed='.$is_subscribed.'&level_id='.$level_id.'&id='.$client_id.'',
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Bearer ' . $_SESSION['user_data']['token'] . ''
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        return $response;
+    }
+
+    public function delete_client($client_id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/clients/'.$client_id.'',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'DELETE',
+        CURLOPT_HTTPHEADER => array(
             'Authorization: Bearer ' . $_SESSION['user_data']['token'] . ''
         ),
         ));
