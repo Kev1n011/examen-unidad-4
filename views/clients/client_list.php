@@ -132,8 +132,8 @@ if (!isset($_SESSION['logeado'])) {
                                                                 class="d-inline">
                                                                 <input type="hidden" name="global_token"
                                                                     value="<?php echo $_SESSION['global_token']; ?>">
-                                                                <input type="hidden" name="user_id" :value="user.id">
-                                                                <input type="hidden" name="action" value="user_details">
+                                                                <input type="hidden" name="client_id" :value="user.id">
+                                                                <input type="hidden" name="action" value="client_details">
                                                                 <li class="list-inline-item m-0">
                                                                     <button
                                                                         type="submit"

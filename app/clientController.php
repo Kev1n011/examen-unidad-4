@@ -24,6 +24,9 @@ if (isset($_POST['action'])) {
 
             header("refresh: 0");
             exit;
+        case 'client_details':
+            header("Location: " . BASE_PATH . "clients/client_details/" . $_POST['client_id']);
+            exit;
 
     }
 }
@@ -135,6 +138,40 @@ class ClientController
 
         curl_close($curl);
         return $response;
+    }
+
+    public function client_details($client_id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://crud.jonathansoto.mx/api/clients/'.$client_id.'',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer ' . $_SESSION['user_data']['token'] . '',
+            'Cookie: XSRF-TOKEN=eyJpdiI6IkpDUjZqMTh1Z2JsVWZ2N3JaSElob1E9PSIsInZhbHVlIjoiSTUxVlduWkc5TGVEWmkycVBUaDRQcE1HcklyczQ0VFVCNmtHbHhUY0F5eFlET1pUUFNudFNwM0MxTW56dXI5NFJZdktsWGhRRGw0bDVNRlQySGIxcjlxeVlZR1g4c3Voa3BGWUVQSnYrKy91T2JPS0VWVFo4TGxrU0l1NUdzQ1MiLCJtYWMiOiJmMTgwMjkwY2FjY2U4NjgwYmFkMDFiMjBlZDdhZGEwOWFhYjNjZTA5MDcxMDkzMDdlYjk1ZjAyNDRhNDZhNzI5IiwidGFnIjoiIn0%3D; apicrud_session=eyJpdiI6Ii9ORG02SG9qZThjOUU3K1F6SmZOUkE9PSIsInZhbHVlIjoiVUNZbG5wUFB5dndjRDI5MlQ3bkxiZ3FvOFZFM0xFR0hKNzN2RWs0ckRKbXRwWE51Y2FkU0tadGpVL3MvTHdTY29zQUdlN0ZPOXpPbDFwUGtSOEYwM1FzeUVuRWtnSDVqeGdlOTd5M1l2UDM5R0xES2lXbnQ4QU5BbDAxZ2JqSkkiLCJtYWMiOiJiOTgwMDdmNDg1ZWMyNTI1NzJjMzg5YmNiYmU1ZDg0NzgxNGQ1NzMzNTIyMmIxYjNiZThjYTEzYzdlM2Y1OGE0IiwidGFnIjoiIn0%3D'
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $response = json_decode($response, true);
+
+
+        if (isset($response['code']) && $response['code'] > 0) {
+            return $response['data'];
+
+        } else {
+            return [];
+        }
+
     }
 
 }

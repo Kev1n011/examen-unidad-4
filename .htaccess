@@ -17,6 +17,7 @@ RewriteRule ^users/user_details/([0-9]+)/?$ views/users/user_details.php?user_id
 
 #CLIENTS
 RewriteRule ^clients/client_list/page/([0-9]+)/?$ views/clients/client_list.php?page=$1 [L]
+RewriteRule ^clients/client_details/([0-9]+)/?$ views/clients/client_details.php?client_id=$1 [L]
 
 #PRODUCTS
 RewriteRule ^products/?$ views/products/index.php 
