@@ -68,6 +68,7 @@ if (!isset($user['id'])) {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <!-- [ breadcrumb ] end -->
@@ -75,9 +76,48 @@ if (!isset($user['id'])) {
 
             <!-- [ Main Content ] start -->
             <div id="app">
+                <div class="row align-items-center">
+                    <div v-if="isLoading" class="d-flex justify-content-center align-items-center"
+                        style="height: 100vh;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="card statistics-card-1">
+                            <div class="card-header d-flex align-items-center justify-content-between py-3">
+                                <h5>Total de órdenes realizadas</h5>
+                            </div>
+                            <div class="card-body">
+                                <img src="<?= BASE_PATH ?>/assets/images/widget/img-status-1.svg" alt="img"
+                                    class="img-fluid img-bg h-100" />
+                                <div class="d-flex align-items-center">
+                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{client.orders.length}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                        <div class="card statistics-card-1">
+                            <div class="card-header d-flex align-items-center justify-content-between py-3">
+                                <h5>Total de productos adquiridos</h5>
+                            </div>
+                            <div class="card-body">
+                                <img src="<?= BASE_PATH ?>/assets/images/widget/img-status-1.svg" alt="img"
+                                    class="img-fluid img-bg h-100" />
+                                <div class="d-flex align-items-center">
+                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{total_products}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
                 <div class="row">
                     <!-- [ form-element ] start -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         <div class="card">
                             <div class="card-header">
                                 <h5>Client information</h5>
@@ -115,31 +155,43 @@ if (!isset($user['id'])) {
                         </div>
                     </div>
 
-                    <div class="col-lg-6">
+                    <div class="col-lg-7">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Control Divider</h5>
+                                <h5>Client addresses</h5>
                             </div>
-                            <div class="card-body">
-                                <form>
-                                    <div class="mb-3">
-                                        <label class="form-label">Name:</label>
-                                        <input type="email" class="form-control" placeholder="Enter full name" />
-                                        <small class="form-text text-muted">Please enter your full name</small>
-                                    </div>
-                                    <hr class="my-4" />
-                                    <div class="mb-3">
-                                        <label class="form-label">Email:</label>
-                                        <input type="email" class="form-control" placeholder="Enter email" />
-                                        <small class="form-text text-muted">Please enter your Email</small>
-                                    </div>
-                                    <hr class="my-4" />
-                                    <div class="mb-3">
-                                        <label class="form-label">Password</label>
-                                        <input type="password" class="form-control" placeholder="enter Password" />
-                                    </div>
+                            <div class="card-body table-border-style">
+                                <div class="d-flex justify-content-end">
+                                    <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_address">
+                                        Add
+                                        address</div>
+                                </div>
+                                <div class="table-responsive" style="margin-top: 1%;">
+                                    <table class="table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>First name</th>
+                                                <th>City</th>
+                                                <th>Province</th>
+                                                <th>Postal Code</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-if="client.addresses.length === 0">
+                                                <td colspan="6" class="text-center text-muted">
+                                                    No se han encontrado direcciones.
+                                                </td>
+                                            </tr>
+                                            <tr v-for="addresses in client.addresses">
+                                                <td>{{addresses.first_name}}</td>
+                                                <td>{{addresses.city}}</td>
+                                                <td>{{addresses.province}}</td>
+                                                <td>{{addresses.postal_code}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -198,20 +250,57 @@ if (!isset($user['id'])) {
             setup() {
                 const message = ref('Hello vue!')
                 const client = ref(<?php echo json_encode($user); ?>);
+                let total_products = ref("");
+                const isLoading = ref(true);
+
+                const cargarDatos = async () => { //Permite que haya un tiempo de espera antes de que carguen los datos
+                    try {
+                        isLoading.value = true;
+
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+
+
+
+                    } finally {
+                        isLoading.value = false;
+                    }
+                };
+
+                cargarDatos();
+
+
                 return {
                     message,
-                    client
+                    client,
+                    total_products,
+                    isLoading,
+
                 }
             },
-            
+
             methods: {
-                
+                get_total_products() {
+                    let cont = 0;
+                    this.client.orders.forEach(order => {
+                        order.presentations.forEach(presentation => {
+                            cont++
+
+                        });
+
+
+                    });
+                    this.total_products = cont;
+
+                },
+
 
 
             },
             mounted() {
                 console.log(this.client.orders)
-                
+                this.get_total_products()
+                console.log(this.client.id)
+
             }
 
         }).mount('#app')

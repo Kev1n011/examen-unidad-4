@@ -9,7 +9,7 @@ $user_navbar = $_SESSION['user_data']
       <ul class="list-unstyled">
         <!-- ======= Menu collapse Icon ===== -->
         <li class="pc-h-item pc-sidebar-collapse">
-          <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+          <a class="pc-head-link ms-0" id="sidebar-hide">
             <i class="ti ti-menu-2"></i>
           </a>
         </li>
