@@ -84,154 +84,164 @@ if (!isset($user['id'])) {
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card statistics-card-1">
-                            <div class="card-header d-flex align-items-center justify-content-between py-3">
-                                <h5>Total de órdenes realizadas</h5>
-                            </div>
-                            <div class="card-body">
-                                <img src="<?= BASE_PATH ?>/assets/images/widget/img-status-1.svg" alt="img"
-                                    class="img-fluid img-bg h-100" />
-                                <div class="d-flex align-items-center">
-                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{client.orders.length}}</h3>
+
+                <div v-if="!isLoading">
+                    <div class="row">
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card statistics-card-1">
+                                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                                    <h5>Total de órdenes realizadas</h5>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-4">
-                        <div class="card statistics-card-1">
-                            <div class="card-header d-flex align-items-center justify-content-between py-3">
-                                <h5>Total de productos adquiridos</h5>
-                            </div>
-                            <div class="card-body">
-                                <img src="<?= BASE_PATH ?>/assets/images/widget/img-status-1.svg" alt="img"
-                                    class="img-fluid img-bg h-100" />
-                                <div class="d-flex align-items-center">
-                                    <h3 class="f-w-300 d-flex align-items-center m-b-0">{{total_products}}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <!-- [ form-element ] start -->
-                    <div class="col-lg-5">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Client information</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-
-                                    <div class="col-md-12">
-                                        <form>
-                                            <div class="mb-3">
-                                                <label class="form-label">Name:</label>
-                                                <input type="text" class="form-control" placeholder="Enter full name"
-                                                    value="<?php echo $user['name'] ?>" />
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label">Email:</label>
-                                                <input type="email" class="form-control" placeholder="Enter email"
-                                                    value="<?php echo $user['email'] ?>" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Phone number</label>
-                                                <input type="text" class="form-control" placeholder="Enter Password"
-                                                    value="<?php echo $user['phone_number'] ?>" />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Current level</label>
-                                                <input type="text" class="form-control" placeholder="Enter Password"
-                                                    value="<?php echo $user['level']['name'] ?>" />
-                                            </div>
-                                        </form>
+                                <div class="card-body">
+                                    <img src="<?= BASE_PATH ?>/assets/images/widget/img-status-1.svg" alt="img"
+                                        class="img-fluid img-bg h-100" />
+                                    <div class="d-flex align-items-center">
+                                        <h3 class="f-w-300 d-flex align-items-center m-b-0">{{client.orders.length}}
+                                        </h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-lg-7">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Client addresses</h5>
-                            </div>
-                            <div class="card-body table-border-style">
-                                <div class="d-flex justify-content-end">
-                                    <div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add_address">
-                                        Add
-                                        address</div>
+                        <div class="col-sm-6 col-xl-4">
+                            <div class="card statistics-card-1">
+                                <div class="card-header d-flex align-items-center justify-content-between py-3">
+                                    <h5>Total de productos adquiridos</h5>
                                 </div>
-                                <div class="table-responsive" style="margin-top: 1%;">
-                                    <table class="table mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>First name</th>
-                                                <th>City</th>
-                                                <th>Province</th>
-                                                <th>Postal Code</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-if="client.addresses.length === 0">
-                                                <td colspan="6" class="text-center text-muted">
-                                                    No se han encontrado direcciones.
-                                                </td>
-                                            </tr>
-                                            <tr v-for="addresses in client.addresses">
-                                                <td>{{addresses.first_name}}</td>
-                                                <td>{{addresses.city}}</td>
-                                                <td>{{addresses.province}}</td>
-                                                <td>{{addresses.postal_code}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>Folio</th>
-                                                <th>Client</th>
-                                                <th>ID Coupon</th>
-                                                <th>Qty</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-if="client.orders.length === 0">
-                                                <td colspan="6" class="text-center text-muted">
-                                                    No se han encontrado órdenes.
-                                                </td>
-                                            </tr>
-                                            <tr v-for="orders in client.orders">
-                                                <td>{{orders.folio}}</td>
-                                                <td>{{client.name}}</td>
-                                                <td>{{orders.coupon_id}}</td>
-                                                <td>{{orders.presentations.length}}</td>
-                                                <td>${{orders.total}}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="card-body">
+                                    <img src="<?= BASE_PATH ?>/assets/images/widget/img-status-1.svg" alt="img"
+                                        class="img-fluid img-bg h-100" />
+                                    <div class="d-flex align-items-center">
+                                        <h3 class="f-w-300 d-flex align-items-center m-b-0">{{total_products}}</h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                    <div class="row">
+                        <!-- [ form-element ] start -->
+                        <div class="col-lg-5">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Client information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+
+                                        <div class="col-md-12">
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Name:</label>
+                                                    <input type="text" class="form-control"
+                                                        placeholder="Enter full name"
+                                                        value="<?php echo $user['name'] ?>" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email:</label>
+                                                    <input type="email" class="form-control" placeholder="Enter email"
+                                                        value="<?php echo $user['email'] ?>" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Phone number</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Password"
+                                                        value="<?php echo $user['phone_number'] ?>" />
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Current level</label>
+                                                    <input type="text" class="form-control" placeholder="Enter Password"
+                                                        value="<?php echo $user['level']['name'] ?>" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-7">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Client addresses</h5>
+                                </div>
+                                <div class="card-body table-border-style">
+                                    <div class="d-flex justify-content-end">
+                                        <div class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#add_address">
+                                            Add
+                                            address</div>
+                                    </div>
+                                    <div class="table-responsive" style="margin-top: 1%;">
+                                        <table class="table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>First name</th>
+                                                    <th>City</th>
+                                                    <th>Province</th>
+                                                    <th>Postal Code</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-if="client.addresses.length === 0">
+                                                    <td colspan="6" class="text-center text-muted">
+                                                        No se han encontrado direcciones.
+                                                    </td>
+                                                </tr>
+                                                <tr v-for="addresses in client.addresses">
+                                                    <td>{{addresses.first_name}}</td>
+                                                    <td>{{addresses.city}}</td>
+                                                    <td>{{addresses.province}}</td>
+                                                    <td>{{addresses.postal_code}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Orders list</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Folio</th>
+                                                    <th>Client</th>
+                                                    <th>ID Coupon</th>
+                                                    <th>Qty</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-if="client.orders.length === 0">
+                                                    <td colspan="6" class="text-center text-muted">
+                                                        No se han encontrado órdenes.
+                                                    </td>
+                                                </tr>
+                                                <tr v-for="orders in client.orders">
+                                                    <td>{{orders.folio}}</td>
+                                                    <td>{{client.name}}</td>
+                                                    <td>{{orders.coupon_id}}</td>
+                                                    <td>{{orders.presentations.length}}</td>
+                                                    <td>${{orders.total}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
 
             </div>
 
